@@ -36,6 +36,6 @@ $ sudo ansible-playbook turtle.yml
 
 ## To Build on VM using source
 
-### Install Vagrant and VirtualBox
-### Clone the repository and cd to the repository
-### Run $ vagrant up
+#### Install Vagrant and VirtualBox
+#### Clone the repository and cd to the repository
+#### Run $ vagrant up
