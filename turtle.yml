@@ -2,6 +2,11 @@
 - hosts: localhost
   tasks:
 
+   - name: Add Local Packages
+     command: sh -c ./update.sh
+     become: yes
+     become_method: sudo
+
    - name: Add ROS repository
      command: sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
      become: yes
