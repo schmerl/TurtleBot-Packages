@@ -1,8 +1,11 @@
 # TurtleBot-Packages
 
+
+## To Build using binaries
+
 On Ubuntu 14.04 (Trusty64)
 
-## Install Ansible from here http://docs.ansible.com/ansible/intro_installation.html
+### Install Ansible from here http://docs.ansible.com/ansible/intro_installation.html
 
 $ sudo apt-get install software-properties-common 
 
@@ -13,18 +16,26 @@ $ sudo apt-get update
 $ sudo apt-get install ansible
 
 
-## Install git
+### Install git
 
 $ sudo apt-get install git
 
-## Clone this repository
+### Clone this repository
 
 $ git clone https://github.com/anuragkanungo/TurtleBot-Packages.git
 
-## Go to directory
+### Go to directory
 
 $ cd TurtleBot-Packages
 
-## Install TurtleBot using Ansible
+### Install TurtleBot using Ansible
 
 $ sudo ansible-playbook turtle.yml
+
+
+
+## To Build on VM using source
+
+### Install Vagrant and VirtualBox
+### Clone the repository and cd to the repository
+### Run $ vagrant up
