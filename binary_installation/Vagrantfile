@@ -1,0 +1,29 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty64"
+  #config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "private_network", ip: "192.168.33.20"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+  end
+
+ $script = <<-SCRIPT
+  sudo apt-get install software-properties-common -y
+  sudo apt-add-repository ppa:ansible/ansible -y
+  sudo apt-get update -y
+  sudo apt-get install ansible -y
+  cd /vagrant
+  sudo ansible-playbook turtle.yml
+  echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
+  source ~/.bashrc
+  sudo rosdep init
+  sudo rosdep fix-permissions
+  rosdep update
+  SCRIPT
+
+  config.vm.provision "shell", inline: $script, privileged: false
+
+end
