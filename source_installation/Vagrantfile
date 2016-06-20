@@ -7,10 +7,11 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", ip: "192.168.33.10"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "2048"
+    vb.memory = "4096"
+    vb.cpus = "4"
   end
 
-  config.vm.provision "shell", inline: <<-SHELL
+  $script = <<-SCRIPT
     sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
     sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net --recv-key 0xB01FA116
     sudo apt-get update
@@ -34,17 +35,18 @@ Vagrant.configure(2) do |config|
     mkdir ~/kobuki
     cd ~/kobuki
     wstool init src -j5 https://raw.github.com/yujinrobot/yujin_tools/master/rosinstalls/indigo/kobuki.rosinstall
-    source ~/rocon/devel/setup.bash
+    source /opt/ros/indigo/setup.bash
     rosdep install --from-paths src --ignore-src --rosdistro indigo -y
     ~/ros_catkin_ws/src/catkin/bin/catkin_make
 
     mkdir ~/turtlebot
     cd ~/turtlebot
     wstool init src -j5 https://raw.github.com/yujinrobot/yujin_tools/master/rosinstalls/indigo/turtlebot.rosinstall
-    source ~/kobuki/devel/setup.bash
+    source /opt/ros/indigo/setup.bash
     rosdep install --from-paths src --ignore-src --rosdistro indigo -y
     ~/ros_catkin_ws/src/catkin/bin/catkin_make
+  SCRIPT
 
-  SHELL
+  config.vm.provision "shell", inline: $script, privileged: false
 
 end
