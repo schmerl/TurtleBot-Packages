@@ -17,3 +17,7 @@
 ## Once vagrant process in complete SSH into the vagrant machine and you can use roslaunch commands.
 
 ``$ vagrant ssh``
+
+## You might need to run to use roslaunch commands.
+
+```$ source /opt/ros/indigo/setup.bash```
