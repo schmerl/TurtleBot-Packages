@@ -1,0 +1,50 @@
+import families/DataflowFam.acme;
+
+family BatchSequentialFam extends DataflowFam with {
+
+        port type ProgramOutputPortT extends OutputPortT with {
+           property transmissionFormat : string << default : string = "file"; >>;
+                rule fileInRoles = invariant forall r in self.ATTACHEDROLES |
+                                declaresType(r, FileInRoleT);
+                                rule matchingTransmissionFormats = invariant forall r :! FileInRoleT in self.ATTACHEDROLES | r.transmissionFormat == self.transmissionFormat;
+        };
+
+        port type ProgramInputPortT extends InputPortT with {
+           property transmissionFormat : string << default : string = "file"; >>;
+                rule fileOutRoles = invariant forall r in self.ATTACHEDROLES |
+                                declaresType(r, FileOutRoleT);
+                                rule matchingTransmissionFormats = invariant forall r :! FileInRoleT in self.ATTACHEDROLES | r.transmissionFormat == self.transmissionFormat;
+        };
+        component type ProducerProgramCompT extends DFlowCompT with {
+          rule atLeast1portOfTypeProgramOutputPortT = heuristic size(/self/PORTS :! ProgramOutputPortT) >= 1;
+        };
+
+        component type TransformerProgramCompT extends DFlowCompT with {
+                rule atLeast1portOfTypeProgramInputPortT = heuristic size(/self/PORTS:!ProgramInputPortT) >= 1;
+                rule atLeast1portOfTypeProgramOutputPortT = heuristic size(/self/PORTS :! ProgramOutputPortT) >= 1;
+                };
+                component type ConsumerProgramCompT extends DFlowCompT with {
+                rule atLeast1portOfTypeProgramOutputPortT = heuristic size(/self/PORTS :! ProgramInputPortT) >= 1;
+        };
+
+        role type FileInRoleT extends InputRoleT with {
+           property transmissionFormat : string = "file";
+                rule fileInMustBeAttached = invariant size(self.ATTACHEDPORTS) == 1;
+                rule fileInMustBeAttachedToFileOutput = invariant exists p in
+                                self.ATTACHEDPORTS | declaresType(p, ProgramOutputPortT);
+        };
+
+        role type FileOutRoleT extends OutputRoleT with {
+           property transmissionFormat : string = "file";
+                rule fileOutMustBeAttached = invariant size(self.ATTACHEDPORTS) == 1;
+                rule fileOutMustBeAttachedToFileInput = invariant exists p in
+                                self.ATTACHEDPORTS | declaresType(p, ProgramInputPortT);
+        };
+        connector type TransmissionConnT extends DFlowConnT with {
+           role fileInput : FileInRoleT = new FileInRoleT;
+           role fileOutput : FileOutRoleT = new FileOutRoleT;
+           rule twoRoles = invariant size(self.ROLES) == 2;
+           rule oneFileInRole = invariant exists r in self.ROLES | declaresType(r, FileInRoleT);
+           rule oneFileOutRole = invariant exists r in self.ROLES | declaresType(r, FileOutRoleT);
+        };
+}

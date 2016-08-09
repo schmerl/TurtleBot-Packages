@@ -1,0 +1,71 @@
+import $AS_GLOBAL_PATH/families/PubSubFam.acme;
+
+import $AS_GLOBAL_PATH/families/LocalCallReturnFam.acme;
+family CoBotFam extends PubSubFam, LocalCallReturnFam with {
+   port type ServiceRequestPortT extends LocalRequestPortT with {
+      property service : string;
+      property maxServiceTime : int <<         default : int = 30; >> ;
+
+    };
+    port type ServiceResponsePortT extends LocalResponsePortT with {
+       property service : string;
+       property serviceTime : int <<         default : int = 30; >> ;
+
+    };
+    port type TopicPublishPortT extends PublishPortT with {
+       property topic : string;
+
+    };
+    port type TopicSubscriberPortT extends SubscribePortT with {
+       property topic : string;
+
+    };
+    port type JobSubmitServiceRequestPortT extends LocalRequestPortT with {
+       property service : string;
+
+    };
+    port type JobSubmitServiceResponsePortT extends LocalResponsePortT with {
+       property service : string;
+
+    };
+    component type CoBotTaskCompT = {
+        rule asyncCallerSubscribes = invariant forall req :! JobSubmitServiceRequestPortT in self.PORTS |
+            exists sub :! TopicSubscriberPortT in self.PORTS |
+                req.service == sub.topic;
+        rule asyncResponderPublishes = invariant forall resp :! JobSubmitServiceResponsePortT in self.PORTS |
+            exists ann :! TopicPublishPortT in self.PORTS |
+                ann.topic == resp.service;
+        rule noServiceCallsToSelf_Sync = invariant forall req :! ServiceRequestPortT in self.PORTS |
+             ! exists resp :! ServiceResponsePortT in self.PORTS |
+                connected(req, resp);
+        rule noServiceCallsToSelf_Async = invariant forall req :! JobSubmitServiceRequestPortT in self.PORTS |
+             ! exists resp :! JobSubmitServiceResponsePortT in self.PORTS |
+                connected(req, resp);
+        rule noSelfConnection = invariant forall pub :! TopicPublishPortT in self.PORTS |
+             ! exists sub :! TopicSubscriberPortT in self.PORTS | pub.topic == sub.topic;
+
+    };
+    role type CobotServiceCallerRoleT extends LocalCallerRoleT;
+    role type CobotServiceResponderRoleT extends LocalResponderRoleT;
+    role type TopicPublisherRoleT extends PublisherRoleT;
+    role type TopicSubscriberRoleT extends SubscriberRoleT;
+    role type JobSubmitCallerRoleT extends LocalCallerRoleT;
+    role type JobSubmitResponderRoleT extends LocalResponderRoleT;
+    connector type TopicBusConnT extends EventBusConnT with {
+       property topic : string;
+
+    };
+    connector type SynchronousCobotServiceConnT extends LocalCallReturnConnT with {
+        rule serviceTimeInBounds = invariant forall c :! CobotServiceCallerRoleT in self.ROLES |
+            forall r :! CobotServiceResponderRoleT in self.ROLES |
+                forall req :! ServiceRequestPortT in c.ATTACHEDPORTS |
+                    forall resp :! ServiceResponsePortT in r.ATTACHEDPORTS |
+                        resp.serviceTime <= req.maxServiceTime;
+
+    };
+    connector type JobSubmitCobotServiceConnT extends LocalCallReturnConnT;
+    rule topicsMatch = invariant forall s :! TopicSubscriberPortT in /self/COMPONENTS/PORTS:!TopicSubscriberPortT |
+        exists p :! TopicPublishPortT in /self/COMPONENTS/PORTS:!TopicPublishPortT |
+            s.topic == p.topic;
+   // rule noSelfConnections = invariant forall c1 :! CoBotTaskCompT in self.components | forall c2 :! CoBotTaskCompT in self.components | connected (c1, c2) -> c1 != c2;
+}

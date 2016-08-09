@@ -1,0 +1,120 @@
+import $AS_GLOBAL_PATH/families/LocalCallReturnFam.acme;
+import $AS_GLOBAL_PATH/families/PubSubFam.acme;
+family ROSFam extends LocalCallReturnFam, PubSubFam with {
+
+   property type ServicePersistencyT = enum {persistent, non-persistent};
+
+   port type ServiceClientPortT extends RequestPortT with {
+      property svc_type : string;
+      property persistency : ServicePersistencyT << default = non-persistent; >>;
+  };
+  port type ServiceProviderPortT extends ResponsePortT with {
+     property svc_type : string;
+  };
+
+  port type ActionClientPortT extends RequestPortT with {
+    property action_type : string;
+  };
+
+  port type ActionServerPortT extends ResponsePortT with {
+    property action_type : string;
+  };
+
+
+  port type TopicSubscribePortT extends SubscribePortT with {
+     property topic : string;
+     property msg_type : string;
+     property queueSize : int;
+  };
+  port type TopicAdvertisePortT extends PublishPortT with {
+     property topic : string;
+     property msg_type : string;
+     property queueSize : int;
+  };
+
+  component type ROSNodeCompT = {
+    // Should the default logger ports be included here?
+     property name : string;
+
+     rule noServiceCallToSelf = invariant forall req :! ServiceClientPortT in self.PORTS |
+       ! exists resp :! ServiceProviderPortT in self.PORTS |
+         connected (req, resp);
+     rule noActionCalLToSelf = invariant forall req :! ActionClientPortT in self.PORTS |
+       ! exists resp :! ActionServerPortT in self.PORTS |
+         connected (req, resp);
+  };
+
+
+  component type ROSNodeletCompT extends ROSNodeCompT;
+
+  component type ROSNodeManagerCompT extends ROSNodeCompT with {
+  };
+
+  role type ROSServiceCallerRoleT extends CallerRoleT;
+  role type ROSServiceResponderRoleT extends ResponderRoleT;
+  role type ROSActionCallerRoleT extends CallerRoleT;
+  role type ROSActionResponderRoleT extends ResponderRoleT;
+  role type ROSTopicAdvertiserRoleT extends PublisherRoleT;
+  role type ROSTopicSubscriberRoleT extends SubscriberRoleT;
+
+  connector type TopicConnectorT extends EventBusConnT with {
+        property topic : string;
+        property msg_type : string;
+
+        rule topicsMatchAdvertiser = invariant
+          forall r :! ROSTopicAdvertiserRoleT in self.ROLES |
+            forall p :! TopicAdvertisePortT in r.ATTACHEDPORTS |
+              (p.topic == topic and p.msg_type == msg_type);
+
+        rule topicsMatchSubscriber = invariant
+          forall r :! ROSTopicSubscriberRoleT in self.ROLES |
+            forall p :! TopicSubscribePortT in r.ATTACHEDPORTS |
+              (p.topic == topic and p.msg_type == msg_type);
+  };
+
+  // Service calls (on the client side) can be non-persistent (normal) and persistent.
+  // Non-persistent service calls consist of three steps: looking up a server that provides
+  // a given service, requesting that service from the looked-up server, and waiting for the result.
+  //Persistent calls/clients establish and maintain the connection with the looked-up server,
+  // repeating only the last two steps in each call after the first one.
+  connector type ServiceConnT extends CallReturnConnT;
+  connector type ActionServerConnT extends CallReturnConnT;
+
+  group type ROSLauncherGroupT = {
+        rule onlyROSNodes = invariant forall m in self.MEMBERS | (declaresType (m, ROSNodeCompT) and !declaresType(m, ROSNodeletCompT));
+  };
+
+  group type ROSNodeManagerGroupT = {
+    property name : string;
+        rule onlyNodelets = invariant forall m in self.MEMBERS | (declaresType (m, ROSNodeletCompT) or declaresType(m,ROSNodeManagerCompT));
+        rule oneNodeManager = invariant exists unique m in self.MEMBERS | declaresType (m, ROSNodeManagerCompT);
+  };
+
+  rule allNodeletsInGroup = invariant forall n :! ROSNodeletCompT in self.COMPONENTS |
+    // Nodelets can only exist as members of a group, and it can only be one
+    // group
+    exists unique m :! ROSNodeManagerGroupT in self.GROUPS | contains (n, m.MEMBERS);
+
+  rule topicsMatch = invariant
+    forall s :! TopicSubscribePortT in /self/COMPONENTS/PORTS:!TopicSubscribePortT |
+      exists p :! TopicAdvertisePortT in /self/COMPONENTS/PORTS:!TopicAdvertisePortT |
+        (s.topic == p.topic and s.msg_type == p.msg_type);
+
+
+  // Only one bus with the same topic and msg_type, otherwise error
+  rule onlyOneBusForTopicAndMsg = invariant forall t1, t2 :! TopicConnectorT in self.CONNECTORS |
+    ((t1.msg_type == t2.msg_type and t1.topic == t2.topic) <-> t1==t2);
+
+
+  // There should only be one bus with the same topic - warning if different msg_types
+  rule onlyOneBusForTopic = heuristic forall t1, t2 :! TopicConnectorT in self.CONNECTORS |
+    (t1.topic == t2.topic) <-> t1 == t2;
+
+  // No nodes should have the same name
+  rule noDuplicateNodes = invariant forall n2 :! ROSNodeCompT in self.COMPONENTS |
+    forall n1 :! ROSNodeCompT in self.COMPONENTS |
+        (n1.name == n2.name) <-> n1 == n2;
+
+
+
+}

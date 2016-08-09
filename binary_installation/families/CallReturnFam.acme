@@ -1,0 +1,55 @@
+family CallReturnFam = {
+        port type RequestPortT = {
+                rule atLeast1Attachment = heuristic size(self.ATTACHEDROLES) >= 1;
+
+                rule attachedOnlyToCallerRoleT =
+                        invariant forall r in self.ATTACHEDROLES
+                                | declaresType(r, CallerRoleT);
+        };
+
+        port type ResponsePortT = {
+                rule atLeast1Attachment = heuristic size(self.ATTACHEDROLES) >= 1;
+
+                rule attachedOnlyToReponderRoleT =
+                        invariant forall r in self.ATTACHEDROLES
+                                | declaresType(r, ResponderRoleT);
+        };
+
+        component type CallerCompT = {
+                rule atLast1portOfTypeRequestPortT =
+                        heuristic exists p in self.PORTS
+                                | declaresType(p, RequestPortT);
+        };
+
+        component type ResponderCompT = {
+                rule atLast1portOfTypeResponsePortT =
+                        heuristic exists p in self.PORTS
+                                | declaresType(p, ResponsePortT);
+        };
+
+        role type CallerRoleT = {
+                rule exactly1Attachment = heuristic size(self.ATTACHEDPORTS) == 1;
+
+                rule attachedOnlyToRequestPort =
+                        invariant forall p : Port in self.ATTACHEDPORTS
+                                | declaresType(p, RequestPortT);
+        };
+
+        role type ResponderRoleT = {
+                rule exactly1Attachment = heuristic size(self.ATTACHEDPORTS) == 1;
+
+                rule attachedOnlyToResponsePort =
+                        invariant forall p : Port in self.ATTACHEDPORTS
+                                | declaresType(p, ResponsePortT);
+        };
+
+        connector type CallReturnConnT = {
+                rule exactly2Roles = invariant size(self.ROLES) == 2;
+                rule exactly1RoleOfTypeCallerRoleT =
+                        invariant exists r in self.ROLES
+                                | declaresType(r, CallerRoleT);
+                rule exactly1RoleOfTypeResponderRoleT =
+                        invariant exists r in self.ROLES
+                                | declaresType(r, ResponderRoleT);
+        };
+}

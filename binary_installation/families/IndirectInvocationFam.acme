@@ -1,0 +1,47 @@
+import families/EventBasedFam.acme;
+
+family IndirectInvocationFam extends EventBasedFam with {
+	port type RegistrationPortT extends AnnouncePortT with {
+		rule atLeast1Attachment = heuristic size(self.attachedroles) >= 1;
+		
+		rule attachedTypes = invariant forall r in self.attachedroles |
+				declaresType(r, InvokerRoleT);
+	};
+	
+	port type InvocationPortT extends ReceivePortT with {
+		rule atLeast1Attchment = heuristic size(self.attachedroles) >= 1;	  
+	
+		rule attachedTypes = invariant forall r in self.attachedroles |
+				declaresType(r, InvokedRoleT);
+	};
+	
+	component type InvokerCompT extends ParticipantCompT with {
+		rule atLeast1portOfTypeRegistrationPortT =
+			heuristic exists p in self.ports
+				| declaresType(p, RegistrationPortT);
+	};
+	
+	component type InvokedCompT extends ParticipantCompT with {
+		rule atLeast1portOfTypeInvocationPortT =
+			heuristic exists p in self.ports
+				| declaresType(p, InvocationPortT);
+	};
+	
+	role type InvokerRoleT extends AnnouncerRoleT with {
+		rule attachedTypes = invariant forall p in self.attachedports
+			| declaresType(p, RegistrationPortT);
+	};
+	
+	role type InvokedRoleT extends ReceiverRoleT with {
+		rule attachedTypes = invariant forall p in self.attachedports
+			| declaresType(p, InvocationPortT);
+	};
+	
+	connector type IndirectInvocationConnT extends EventConnT with {
+		rule exactly2Roles = invariant size(self.roles) == 2;
+		rule exactly1RoleOfTypeInvokerRoleT =
+			invariant exists r in self.roles | declaresType(r, InvokerRoleT);
+		rule exactly1RoleOfTypeInvokedRoleT =
+			invariant exists r in self.roles | declaresType(r, InvokedRoleT);
+	};
+}

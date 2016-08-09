@@ -1,0 +1,40 @@
+import families/CallReturnFam;
+
+family RemoteCallReturnFam extends CallReturnFam with {
+        port type RemoteRequestPortT extends RequestPortT with {
+                rule exactly1Attachment = invariant size(self.ATTACHEDROLES) == 1;
+
+                rule attachedOnlyToRemoteCallerRoleT =
+                        invariant forall p in self.ATTACHEDROLES
+                                | declaresType(p, RemoteCallerRoleT);
+        };
+
+        port type RemoteResponsePortT extends ResponsePortT with {
+                rule exactly1Attachment = invariant size(self.ATTACHEDROLES) == 1;
+
+                rule attachedOnlyToRemoteResponderRoleT =
+                        invariant forall p in self.ATTACHEDROLES
+                                | declaresType(p, RemoteResponderRoleT);
+        };
+
+        role type RemoteCallerRoleT extends CallerRoleT with {
+                rule attachedOnlyToRemoteRequestPortT =
+                        invariant forall p in self.ATTACHEDPORTS
+                                | declaresType(p, RemoteRequestPortT);
+        };
+
+        role type RemoteResponderRoleT extends ResponderRoleT with {
+                rule attachedOnlyToRemoteResponsePortT =
+                        invariant forall p in self.ATTACHEDPORTS
+                                | declaresType(p, RemoteResponsePortT);
+        };
+
+        connector type RemoteCallReturnConnT extends CallReturnConnT with {
+                rule exactly1RoleOfTypeRemoteCallerRoleT =
+                        invariant exists r in self.ROLES
+                                | declaresType(r, RemoteCallerRoleT);
+                rule exactly1RoleOfTypeRemoteResponderRoleT =
+                        invariant exists r in self.ROLES
+                                | declaresType(r, RemoteResponderRoleT);
+        };
+}

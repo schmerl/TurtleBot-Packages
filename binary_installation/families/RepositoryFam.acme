@@ -1,0 +1,40 @@
+family RepositoryFam = {
+  port type DataAccessorPortT = {
+                rule attachedOnlyToDataAccessorRole =
+                                invariant forall r : Role in self.ATTACHEDROLES
+                                | declaresType(r, DataAccessorRoleT);
+                                };
+                                port type RepositoryPortT = {
+        rule attachedOnlyToRepositoryRole =
+                                invariant forall r : Role in self.ATTACHEDROLES
+                                | declaresType(r, RepositoryRoleT);
+        };
+
+        abstract component type RepositoryCompT = {
+           rule atLeastTheseTypesRepositoryPortT = invariant exists e in self.PORTS | declaresType(e, RepositoryPortT);
+        };
+
+        abstract component type DataAccessorCompT = {
+                rule atLeastTheseTypesDataAccessorPortT = heuristic exists e in self.PORTS
+                                | declaresType(e, DataAccessorPortT);
+        };
+
+        role type RepositoryRoleT = {
+                rule attached = invariant size(self.ATTACHEDPORTS) > 0;
+                rule attachedOnlyToRepositoryPort =
+                                invariant forall p : Port in self.ATTACHEDPORTS
+                                | declaresType(p, RepositoryPortT);
+        };
+
+        role type DataAccessorRoleT = {
+                rule attached = invariant size(self.ATTACHEDPORTS) > 0;
+                rule attachedOnlyToDataAccessorPort =
+                                invariant forall p : Port in self.ATTACHEDPORTS
+                                | declaresType(p, DataAccessorPortT);
+        };
+        abstract connector type DataAccessConnT = {
+                rule atLeastOneOfTheseTypesDataAccessorRoleT = heuristic exists r : Role in self.ROLES
+                                | declaresType(r, DataAccessorRoleT);
+                                rule atLeastTheseTypesRepositoryRoleT = heuristic exists e in self.ROLES | declaresType(e, RepositoryRoleT);
+        };
+}

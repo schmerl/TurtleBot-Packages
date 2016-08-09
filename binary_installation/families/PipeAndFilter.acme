@@ -1,0 +1,45 @@
+import families/DataflowFam.acme;
+
+family PipeAndFilterFam extends DataflowFam with {
+
+    port type FilterInputPortT extends InputPortT with {
+            rule dataOutRoles = invariant forall r in self.ATTACHEDROLES |
+                            declaresType(r, DataOutRoleT);
+    };
+
+    port type FilterOutputPortT extends OutputPortT with {
+            rule dataInRoles = invariant forall r in self.ATTACHEDROLES |
+                            declaresType(r, DataInRoleT);
+    };
+
+    component type SourceCompT extends DFlowCompT with {
+       rule atLeast1portOfTypeFilterOutputPortT = invariant size(/self/PORTS:!FilterOutputPortT) >= 1;
+    };
+
+    component type SinkCompT extends DFlowCompT with {
+       rule atLeast1portOfTypeFilterInputPortT = invariant size(/self/PORTS:!FilterInputPortT) >= 1;
+    };
+
+    component type FilterCompT extends DFlowCompT with {
+       rule atLeast1portOfTypeFilterInputPortT = invariant size(/self/PORTS:! FilterInputPortT) >= 1;
+       rule atLeast1portOfTypeFilterOutputPortT = invariant size(/self/PORTS:! FilterOutputPortT) >= 1;
+    };
+
+    role type DataInRoleT extends InputRoleT with {
+        rule dataInMustBeAttachedToFilterOutput = invariant exists p in self.ATTACHEDPORTS |
+                            declaresType(p, FilterOutputPortT);
+        rule exactly1attachment = invariant size(self.ATTACHEDPORTS) == 1 or (size(self.ATTACHEDPORTS) == 0 and attachedOrBound(self));
+    };
+
+    role type DataOutRoleT extends OutputRoleT with {
+        rule dataOutMustBeAttached = invariant size(self.ATTACHEDPORTS) == 1;
+        rule exactly1attachment = invariant size( self.ATTACHEDPORTS) == 1 or (size(self.ATTACHEDPORTS) == 0 and attachedOrBound(self));
+    };
+
+    connector type PipeConnT = {
+        rule exactly2roles = invariant size( self.ROLES) == 2;
+        rule atLeast1RoleOfTypeDataInRoleT = invariant exists e in self.ROLES | declaresType(e, DataInRoleT);
+        rule atLeast1RoleOfTypeDataOutRoleT = invariant exists e in self.ROLES | declaresType(e, DataOutRoleT);
+
+    };
+}
