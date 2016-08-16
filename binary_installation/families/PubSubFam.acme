@@ -1,0 +1,46 @@
+import families/EventBasedFam.acme;
+
+family PubSubFam extends EventBasedFam with {
+        port type PublishPortT extends AnnouncePortT with {
+                rule exactly1Attachment = heuristic size(self.ATTACHEDROLES) == 1;
+
+                rule attachedToPublisherRoleT = invariant forall r in self.ATTACHEDROLES
+                        | declaresType(r, PublisherRoleT);
+        };
+
+        port type SubscribePortT extends ReceivePortT with {
+                rule exactly1Attachment = heuristic size(self.ATTACHEDROLES) == 1;
+
+                rule attachedToSubscriberRoleT = invariant forall r in self.ATTACHEDROLES
+                        | declaresType(r, SubscriberRoleT);
+        };
+
+        component type PublisherCompT extends ParticipantCompT with {
+                rule atLeast1portOfTypePublishPortT = heuristic exists p in self.PORTS
+                        | declaresType(p, PublishPortT);
+        };
+
+        component type SubscriberCompT extends ParticipantCompT with {
+                rule atLeast1portOfTypeSubscribePortT = heuristic exists p in self.PORTS
+                        | declaresType(p, SubscribePortT);
+        };
+
+        role type PublisherRoleT extends AnnouncerRoleT with {
+                rule attachedToPublisherPortT = invariant forall p in self.ATTACHEDPORTS
+                        | declaresType(p, PublishPortT);
+        };
+
+        role type SubscriberRoleT extends ReceiverRoleT with {
+                rule attachedToSubscribePortT = invariant forall p in self.ATTACHEDPORTS
+                        | declaresType(p, SubscribePortT);
+        };
+
+        connector type EventBusConnT extends EventConnT with {
+                rule atLeast1RoleOfTypePublisherRoleT =
+                        heuristic exists r in self.ROLES
+                                | declaresType(r, PublisherRoleT);
+                rule atLeast1RoleOfTypeSubscriberRoleT =
+                        heuristic exists r in self.ROLES
+                                | declaresType(r, SubscriberRoleT);
+        };
+}

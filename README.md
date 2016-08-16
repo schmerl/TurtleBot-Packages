@@ -1,41 +1,23 @@
 # TurtleBot-Packages
 
-
-## To Build using binaries
-
-On Ubuntu 14.04 (Trusty64)
-
-### Install Ansible from here http://docs.ansible.com/ansible/intro_installation.html
-
-$ sudo apt-get install software-properties-common 
-
-$ sudo apt-add-repository ppa:ansible/ansible
-
-$ sudo apt-get update
-
-$ sudo apt-get install ansible
-
-
-### Install git
-
-$ sudo apt-get install git
+## Install Vagrant and Virtualbox.
 
 ### Clone this repository
 
-$ git clone https://github.com/anuragkanungo/TurtleBot-Packages.git
+``$ git clone https://github.com/anuragkanungo/TurtleBot-Packages.git``
 
-### Go to directory
+## Go to binary or source installation directory as required
 
-$ cd TurtleBot-Packages
+``$ cd binary_installation``
 
-### Install TurtleBot using Ansible
+## Run Vagrant
 
-$ sudo ansible-playbook turtle.yml
+``$ vagrant up``
 
+## Once vagrant process in complete SSH into the vagrant machine and you can use roslaunch commands.
 
+``$ vagrant ssh``
 
-## To Build on VM using source
+## You might need to run to use roslaunch commands.
 
-#### Install Vagrant and VirtualBox
-#### Clone the repository and cd to the repository
-#### Run $ vagrant up
+```$ source /opt/ros/indigo/setup.bash```

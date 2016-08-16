@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AcmeModel>
+  <family name="ROSFam">
+    <userdata key="SaveData">
+      <data date="7/20/16 2:39 PM"/>
+    </userdata>
+    <userdata key="connection-patterns">
+      <data>
+        <portConnectionRule connector="ServiceConnT" name="">
+          <association componentType="Component" portName="svc_client" portType="ServiceClientPortT" roleName="caller" roleType="ROSServiceCallerRoleT"/>
+          <association componentType="Component" portName="svc_provider" portType="ServiceProviderPortT" roleName="responder" roleType="ROSServiceResponderRoleT"/>
+        </portConnectionRule>
+        <portConnectionRule connector="ServiceConnT" name="">
+          <association componentType="Component" portName="svc_provider" portType="ServiceProviderPortT" roleName="responder" roleType="ROSServiceResponderRoleT"/>
+          <association componentType="Component" portName="svc_client" portType="ServiceClientPortT" roleName="caller" roleType="ROSServiceCallerRoleT"/>
+        </portConnectionRule>
+        <portConnectionRule connector="ActionServerConnT" name="">
+          <association componentType="Component" portName="act_client" portType="ActionClientPortT" roleName="caller" roleType="ROSActionCallerRoleT"/>
+          <association componentType="Component" portName="act_provider" portType="ActionServerPortT" roleName="responder" roleType="ROSActionResponderRoleT"/>
+        </portConnectionRule>
+        <portConnectionRule connector="ActionServerConnT" name="">
+          <association componentType="Component" portName="act_provider" portType="ActionServerPortT" roleName="responder" roleType="ROSActionResponderRoleT"/>
+          <association componentType="Component" portName="act_client" portType="ActionClientPortT" roleName="caller" roleType="ROSActionCallerRoleT"/>
+        </portConnectionRule>
+        <portConnectionRule connector="TopicConnectorT" name="">
+          <association componentType="Component" portName="subscribe" portType="TopicSubscribePortT" roleName="subscriber" roleType="ROSTopicSubscriberRoleT"/>
+          <association componentType="Component" portName="advertise" portType="TopicAdvertisePortT" roleName="advertiser" roleType="ROSTopicAdvertiserRoleT"/>
+        </portConnectionRule>
+        <portConnectionRule connector="TopicConnectorT" name="">
+          <association componentType="Component" portName="advertise" portType="TopicAdvertisePortT" roleName="advertiser" roleType="ROSTopicAdvertiserRoleT"/>
+          <association componentType="Component" portName="subscribe" portType="TopicSubscribePortT" roleName="subsriber" roleType="ROSTopicSubscriberRoleT"/>
+        </portConnectionRule>
+      </data>
+    </userdata>
+    <port-type name="ServiceClientPortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape outlineWidth="2" visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="false"/>
+            <alignWithAttachedRole on="false"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="ServiceProviderPortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape outlineWidth="2" visualizationStrategyKey="org.acmestudio.ui.editor.diagram.visualization.strategy.OpenArrowStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+              <size height="9" width="9"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="true"/>
+            <alignWithAttachedRole on="true"/>
+            <pointer orientation="In"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="ActionClientPortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape outlineWidth="2" visualizationStrategyKey="org.acmestudio.ui.DiamondVisualizationStrategy">
+              <fillColor blue="0" green="0" red="0"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="false"/>
+            <alignWithAttachedRole on="false"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="ActionServerPortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape visualizationStrategyKey="org.acmestudio.ui.TriangleVisualizationStrategy">
+              <fillColor blue="0" green="0" red="0"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="true"/>
+            <alignWithAttachedRole on="true"/>
+            <pointer orientation="In"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="TopicSubscribePortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape outlineWidth="2" visualizationStrategyKey="org.acmestudio.ui.RectangleVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="false"/>
+            <alignWithAttachedRole on="false"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="TopicAdvertisePortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape visualizationStrategyKey="org.acmestudio.ui.RectangleVisualizationStrategy">
+              <fillColor blue="0" green="0" red="0"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="false"/>
+            <alignWithAttachedRole on="false"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <component-type name="ROSNodeCompT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="COMPONENT">
+            <shape visualizationStrategyKey="org.acmestudio.ui.RectangleVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <size height="100" width="50"/>
+            </shape>
+            <label property="name" rotation="270" source="Acme Property Value">
+              <labelColor/>
+            </label>
+            <font/>
+            <representation>
+              <data>
+                <attribute key="repPortSize" type="string" val="ORIGINAL"/>
+              </data>
+            </representation>
+            <restrictPortType allowedTypes="" on="false"/>
+            <forcePortPlacement on="true">
+              <portPlacementRule alignment="Center" portType="Port" side="Default"/>
+            </forcePortPlacement>
+            <resizeToFitPorts on="false"/>
+          </visualization>
+        </data>
+      </userdata>
+    </component-type>
+    <role-type name="ROSServiceCallerRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape outlineWidth="2" visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="ROSServiceResponderRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape outlineWidth="2" visualizationStrategyKey="org.acmestudio.ui.editor.diagram.visualization.strategy.OpenArrowStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+              <size height="8" width="8"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="ROSActionCallerRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape visualizationStrategyKey="org.acmestudio.ui.DiamondVisualizationStrategy">
+              <fillColor blue="128" green="128" red="128"/>
+              <outlineColor blue="192" green="192" red="192"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="ROSActionResponderRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape visualizationStrategyKey="org.acmestudio.ui.TriangleVisualizationStrategy">
+              <fillColor blue="128" green="128" red="128"/>
+              <outlineColor blue="128" green="128" red="128"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="ROSTopicAdvertiserRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape visualizationStrategyKey="org.acmestudio.ui.RectangleVisualizationStrategy">
+              <fillColor blue="128" green="128" red="128"/>
+              <outlineColor blue="128" green="128" red="128"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="ROSTopicSubscriberRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape outlineWidth="2" visualizationStrategyKey="org.acmestudio.ui.PageVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="128" green="128" red="128"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <connector-type name="TopicConnectorT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="CONNECTOR">
+            <shape visualizationStrategyKey="org.acmestudio.ui.RectangleVisualizationStrategy">
+              <fillColor blue="192" green="192" red="192"/>
+              <size height="18" width="300"/>
+            </shape>
+            <label horizAlign="Left" property="topic" rotation="0" source="Acme Property Value">
+              <labelColor/>
+            </label>
+            <font/>
+            <representation>
+              <data>
+                <attribute key="repPortSize" type="string" val="ORIGINAL"/>
+              </data>
+            </representation>
+            <restrictRoleType allowedTypes="" on="false"/>
+            <forceRoleRoute>
+              <roleRouteRule roleType="PublisherRoleT" route="ELBOW"/>
+              <roleRouteRule roleType="SubscriberRoleT" route="ELBOW"/>
+              <roleRouteRule roleType="ROSTopicAdvertiserRoleT" route="ELBOW"/>
+              <roleRouteRule roleType="ROSTopicSubscriberRoleT" route="ELBOW"/>
+            </forceRoleRoute>
+            <defaultRoleCount value="0"/>
+            <autoCenterBinaryConnector on="false"/>
+          </visualization>
+        </data>
+      </userdata>
+    </connector-type>
+    <connector-type name="ServiceConnT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="CONNECTOR">
+            <shape visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="255" green="255" red="255"/>
+              <size height="20" width="20"/>
+            </shape>
+            <label rotation="0" source="Static Label" value="S">
+              <labelColor/>
+            </label>
+            <font/>
+            <representation>
+              <data>
+                <attribute key="repPortSize" type="string" val="ORIGINAL"/>
+              </data>
+            </representation>
+            <restrictRoleType allowedTypes="" on="false"/>
+            <forceRoleRoute>
+              <roleRouteRule roleType="ROSServiceCallerRoleT" route="STRAIGHT"/>
+              <roleRouteRule roleType="ROSServiceResponderRoleT" route="STRAIGHT"/>
+            </forceRoleRoute>
+            <defaultRoleCount value="2"/>
+            <autoCenterBinaryConnector on="true"/>
+          </visualization>
+        </data>
+      </userdata>
+      <userdata key="SubElementRules">
+        <data>
+          <createRule prefix="caller" types="ROSServiceCallerRoleT"/>
+          <createRule prefix="responder" types="ROSServiceResponderRoleT"/>
+        </data>
+      </userdata>
+    </connector-type>
+    <connector-type name="ActionServerConnT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="CONNECTOR">
+            <shape visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="255" green="255" red="255"/>
+            </shape>
+            <label rotation="0" source="Static Label" value="A">
+              <labelColor/>
+            </label>
+            <font/>
+            <representation>
+              <data>
+                <attribute key="repPortSize" type="string" val="ORIGINAL"/>
+              </data>
+            </representation>
+            <restrictRoleType allowedTypes="" on="false"/>
+            <forceRoleRoute>
+              <roleRouteRule roleType="ROSActionCallerRoleT" route="ELBOW"/>
+              <roleRouteRule roleType="ROSActionResponderRoleT" route="ELBOW"/>
+            </forceRoleRoute>
+            <defaultRoleCount value="2"/>
+            <autoCenterBinaryConnector on="false"/>
+          </visualization>
+        </data>
+      </userdata>
+    </connector-type>
+    <group-type name="ROSNodeManagerGroupT">
+      <group name="prototype">
+        <userdata key="GroupVisuals">
+          <data halign="2" label="%Property=name" linestyle="3" linewidth="3" rounded="true" valign="3">
+            <color blue="191" green="168" red="152"/>
+          </data>
+        </userdata>
+      </group>
+    </group-type>
+    <system name="prototype">
+      <userdata key="connection-patterns">
+        <data>
+          <portConnectionRule connector="Connector" name="">
+            <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+            <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+          </portConnectionRule>
+        </data>
+      </userdata>
+    </system>
+  </family>
+</AcmeModel>

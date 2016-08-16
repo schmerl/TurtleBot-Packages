@@ -1,0 +1,41 @@
+import families/CallReturnFam;
+
+family LocalCallReturnFam extends CallReturnFam with {
+	port type LocalRequestPortT extends RequestPortT with {
+		rule exactly1Attachment = invariant size(self.attachedroles) == 1;
+		
+		rule attachedOnlyToLocalCallerRoleT =
+			invariant forall p in self.attachedroles
+				| declaresType(p, LocalCallerRoleT);
+	};
+	
+	port type LocalResponsePortT extends ResponsePortT with {
+		rule exactly1Attachment = invariant size(self.attachedroles) == 1;
+	  
+		rule attachedOnlyToLocalResponderRoleT =
+			invariant forall p in self.attachedroles
+				| declaresType(p, LocalResponderRoleT);
+	};
+	
+	role type LocalCallerRoleT extends CallerRoleT with {
+		rule attachedOnlyToLocalRequestPortT =
+			invariant forall p in self.attachedports
+				| declaresType(p, LocalRequestPortT);
+	};
+	
+	role type LocalResponderRoleT extends ResponderRoleT with {
+		rule attachedOnlyToLocalResponsePortT =
+			invariant forall p in self.attachedports
+				| declaresType(p, LocalResponsePortT);
+	};
+	
+	connector type LocalCallReturnConnT extends CallReturnConnT with {
+		rule exactly1RoleOfTypeLocalCallerRoleT =
+			invariant exists r in self.roles
+				| declaresType(r, LocalCallerRoleT);
+		rule exactly1RoleOfTypeLocalResponderRoleT =
+			invariant exists r in self.roles 
+				| declaresType(r, LocalResponderRoleT);
+	};
+}
+

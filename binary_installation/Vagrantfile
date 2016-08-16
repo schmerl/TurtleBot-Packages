@@ -1,0 +1,54 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/trusty64"
+
+  ## For headless comment above line and uncomment below one
+  #config.vm.box = "ubuntu/trusty64"
+  #config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  config.vm.network "private_network", ip: "192.168.33.20"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"
+  end
+
+ $script = <<-SCRIPT
+  sudo apt-get install software-properties-common -y
+  sudo apt-add-repository ppa:ansible/ansible -y
+  sudo apt-get update -y
+  sudo apt-get install ansible -y
+  sudo apt-get install -f
+  sudo cp /vagrant/ros-latest.list /etc/apt/sources.list.d/
+  cd /vagrant
+  sudo ansible-playbook turtle.yml
+  echo "source /opt/ros/indigo/setup.bash" >> ~/.bashrc
+  source ~/.bashrc
+  source /opt/ros/indigo/setup.bash
+  sudo rosdep init
+  sudo rosdep fix-permissions
+  rosdep update
+  sudo cp /vagrant/tcpros_service.py /opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/
+  sudo add-apt-repository ppa:openjdk-r/ppa
+  sudo apt-get update
+  sudo apt-get install openjdk-8-jre-headless -y
+  source /opt/ros/indigo/setup.bash
+  java -jar AcmeProject.jar > acmeProject.out &
+  python data.py > py.out &
+  rm -rf rainbow_effector
+  git clone rhttps://github.com/ekanshgupta90/rainbow_effector.git
+  cd rainbow_effector
+  source /opt/ros/indigo/setup.bash
+  roslaunch turtlebot_bringup minimal.launch > minimal.out &
+  sleep 30s
+  roslaunch turtlebot_navigation amcl_demo.launch > navigation.out &
+  sleep 30s
+  rosrun dynamic_reconfigure dynparam set /move_base recovery_behavior_enabled False
+  rosrun dynamic_reconfigure dynparam set /move_base clearing_rotation_allowed False
+  rosrun dynamic_reconfigure dynparam set /move_base shutdown_costmaps True
+  SCRIPT
+
+  config.vm.provision "shell", inline: $script, privileged: false
+
+end

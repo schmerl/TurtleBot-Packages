@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<AcmeModel>
+  <family name="CoBotFam">
+    <userdata key="SaveData">
+      <data date="11/3/15 6:10 PM"/>
+    </userdata>
+    <userdata key="connection-patterns">
+      <data>
+        <portConnectionRule connector="SynchronousCobotServiceConnT" name="">
+          <association componentType="Component" portName="req" portType="ServiceRequestPortT" roleName="caller" roleType="CobotServiceCallerRoleT"/>
+          <association componentType="Component" portName="res" portType="ServiceResponsePortT" roleName="responder" roleType="CobotServiceResponderRoleT"/>
+        </portConnectionRule>
+        <portConnectionRule connector="SynchronousCobotServiceConnT" name="">
+          <association componentType="Component" portName="res" portType="ServiceResponsePortT" roleName="responder" roleType="CobotServiceResponderRoleT"/>
+          <association componentType="Component" portName="req" portType="ServiceRequestPortT" roleName="caller" roleType="CobotServiceCallerRoleT"/>
+        </portConnectionRule>
+        <portConnectionRule connector="TopicBusConnT" name="">
+          <association componentType="Component" portName="publish" portType="TopicPublishPortT" roleName="publisher" roleType="TopicPublisherRoleT"/>
+          <association componentType="Component" portName="subscribe" portType="TopicSubscriberPortT" roleName="subscriber" roleType="TopicSubscriberRoleT"/>
+        </portConnectionRule>
+        <portConnectionRule connector="TopicBusConnT" name="">
+          <association componentType="Component" portName="subscribe" portType="TopicSubscriberPortT" roleName="subscriber" roleType="TopicSubscriberRoleT"/>
+          <association componentType="Component" portName="publish" portType="TopicPublishPortT" roleName="publisher" roleType="TopicPublisherRoleT"/>
+        </portConnectionRule>
+        <portConnectionRule connector="Connector" name="">
+          <association componentType="Component" portName="p_AsynchServiceRequestPortT" portType="JobSubmitServiceRequestPortT" roleName="r_AsynchCallerRoleT" roleType="JobSubmitCallerRoleT"/>
+          <association componentType="Component" portName="p_AsynchServiceResponsePortT" portType="JobSubmitServiceResponsePortT" roleName="r_AsyncResponderRoleT" roleType="Role"/>
+        </portConnectionRule>
+        <portConnectionRule connector="Connector" name="">
+          <association componentType="Component" portName="p_AsynchServiceResponsePortT" portType="JobSubmitServiceResponsePortT" roleName="r_AsyncResponderRoleT" roleType="Role"/>
+          <association componentType="Component" portName="p_AsynchServiceRequestPortT" portType="JobSubmitServiceRequestPortT" roleName="r_AsynchCallerRoleT" roleType="JobSubmitCallerRoleT"/>
+        </portConnectionRule>
+      </data>
+    </userdata>
+    <port-type name="ServiceRequestPortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape outlineWidth="2" visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="false"/>
+            <alignWithAttachedRole on="false"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="ServiceResponsePortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape visualizationStrategyKey="org.acmestudio.ui.TriangleVisualizationStrategy">
+              <fillColor blue="0" green="0" red="0"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="true"/>
+            <alignWithAttachedRole on="true"/>
+            <pointer orientation="In"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="TopicPublishPortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape visualizationStrategyKey="org.acmestudio.ui.TriangleVisualizationStrategy">
+              <fillColor blue="0" green="0" red="0"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="true"/>
+            <alignWithAttachedRole on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="TopicSubscriberPortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape visualizationStrategyKey="org.acmestudio.ui.TriangleVisualizationStrategy">
+              <fillColor blue="0" green="0" red="0"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="true"/>
+            <alignWithAttachedRole on="true"/>
+            <pointer orientation="In"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="JobSubmitServiceRequestPortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape outlineStyle="Dot" outlineWidth="2" visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="false"/>
+            <alignWithAttachedRole on="false"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <port-type name="JobSubmitServiceResponsePortT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="PORT">
+            <shape outlineStyle="Dot" visualizationStrategyKey="org.acmestudio.ui.TriangleVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <rotateAroundComponentCenter on="true"/>
+            <alignWithAttachedRole on="true"/>
+            <pointer orientation="In"/>
+          </visualization>
+        </data>
+      </userdata>
+    </port-type>
+    <component-type name="CoBotTaskCompT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="COMPONENT">
+            <shape visualizationStrategyKey="org.acmestudio.ui.RectangleVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <size height="150" width="50"/>
+            </shape>
+            <label rotation="90" wordwrap="true">
+              <labelColor/>
+            </label>
+            <font/>
+            <representation>
+              <data>
+                <attribute key="repPortSize" type="string" val="ORIGINAL"/>
+              </data>
+            </representation>
+            <restrictPortType allowedTypes="" on="false"/>
+            <forcePortPlacement on="true">
+              <portPlacementRule alignment="Center" portType="ServiceRequestPortT" side="Bottom"/>
+              <portPlacementRule alignment="Center" portType="ServiceResponsePortT" side="Bottom"/>
+              <portPlacementRule alignment="Center" portType="TopicPublishPortT" side="Top"/>
+              <portPlacementRule alignment="Center" portType="TopicSubscriberPortT" side="Top"/>
+            </forcePortPlacement>
+            <resizeToFitPorts on="true"/>
+          </visualization>
+        </data>
+      </userdata>
+    </component-type>
+    <role-type name="CobotServiceCallerRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="CobotServiceResponderRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape visualizationStrategyKey="org.acmestudio.ui.editor.diagram.visualization.strategy.OpenArrowStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+              <size height="10" width="10"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="abutRole" type="boolean" val="false"/>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="TopicPublisherRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape visualizationStrategyKey="org.acmestudio.ui.TriangleVisualizationStrategy">
+              <fillColor blue="0" green="0" red="0"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="In"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="TopicSubscriberRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape visualizationStrategyKey="org.acmestudio.ui.TriangleVisualizationStrategy">
+              <fillColor blue="0" green="0" red="0"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="JobSubmitCallerRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape outlineStyle="Dot" visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <role-type name="JobSubmitResponderRoleT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="ROLE">
+            <shape outlineStyle="Dot" visualizationStrategyKey="org.acmestudio.ui.editor.diagram.visualization.strategy.OpenArrowStrategy">
+              <fillColor blue="255" green="255" red="255"/>
+              <outlineColor blue="0" green="0" red="0"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <extras>
+              <attribute key="HIDE_ROLE" type="boolean" val="true"/>
+            </extras>
+            <rotateAroundConnectorCenter on="true"/>
+            <pointer orientation="Out"/>
+          </visualization>
+        </data>
+      </userdata>
+    </role-type>
+    <connector-type name="TopicBusConnT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="CONNECTOR">
+            <shape visualizationStrategyKey="org.acmestudio.ui.visualization.BusVisualizationStrategy">
+              <fillColor blue="128" green="128" red="128"/>
+              <size height="20" width="300"/>
+            </shape>
+            <label horizAlign="Left" property="topic" rotation="0" source="Acme Property Value">
+              <labelColor blue="255" green="255" red="255"/>
+            </label>
+            <font/>
+            <representation>
+              <data>
+                <attribute key="repPortSize" type="string" val="ORIGINAL"/>
+              </data>
+            </representation>
+            <extras>
+              <attribute key="ROUNDEDNESS" type="int" val="10"/>
+            </extras>
+            <restrictRoleType allowedTypes="" on="false"/>
+            <forceRoleRoute>
+              <roleRouteRule roleType="TopicPublisherRoleT" route="ELBOW"/>
+              <roleRouteRule roleType="TopicSubscriberRoleT" route="ELBOW"/>
+            </forceRoleRoute>
+            <defaultRoleCount value="0"/>
+            <autoCenterBinaryConnector on="false"/>
+          </visualization>
+        </data>
+      </userdata>
+    </connector-type>
+    <connector-type name="SynchronousCobotServiceConnT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="CONNECTOR">
+            <shape visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <size height="1" width="1"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <representation>
+              <data>
+                <attribute key="repPortSize" type="string" val="ORIGINAL"/>
+              </data>
+            </representation>
+            <restrictRoleType allowedTypes="" on="false"/>
+            <forceRoleRoute>
+              <roleRouteRule roleType="CobotServiceCallerRoleT" route="ELBOW"/>
+              <roleRouteRule roleType="CobotServiceResponderRoleT" route="ELBOW"/>
+            </forceRoleRoute>
+            <defaultRoleCount value="2"/>
+            <autoCenterBinaryConnector on="false"/>
+          </visualization>
+        </data>
+      </userdata>
+      <userdata key="SubElementRules">
+        <data>
+          <createRule prefix="call" types="CobotServiceCallerRoleT"/>
+          <createRule prefix="response" types="CobotServiceResponderRoleT"/>
+        </data>
+      </userdata>
+      <connector name="prototype">
+        <design-rule name="serviceTimeInBounds">
+          <userdata key="RuleInfo">
+            <data errMsg="The responders service time is greater than the requesters required time." label="The responders service time is less than or equal to the requesters required time."/>
+          </userdata>
+        </design-rule>
+      </connector>
+    </connector-type>
+    <connector-type name="JobSubmitCobotServiceConnT">
+      <userdata key="element-visualization">
+        <data>
+          <visualization hideFromPalette="false" type="CONNECTOR">
+            <shape visualizationStrategyKey="org.acmestudio.ui.OvalVisualizationStrategy">
+              <size height="2" width="2"/>
+            </shape>
+            <label rotation="0">
+              <labelColor/>
+            </label>
+            <font/>
+            <representation>
+              <data>
+                <attribute key="repPortSize" type="string" val="ORIGINAL"/>
+              </data>
+            </representation>
+            <restrictRoleType allowedTypes="" on="false"/>
+            <forceRoleRoute>
+              <roleRouteRule roleType="JobSubmitCallerRoleT" route="ELBOW"/>
+              <roleRouteRule roleType="JobSubmitResponderRoleT" route="ELBOW"/>
+            </forceRoleRoute>
+            <defaultRoleCount value="2"/>
+            <autoCenterBinaryConnector on="false"/>
+          </visualization>
+        </data>
+      </userdata>
+    </connector-type>
+    <system name="prototype">
+      <userdata key="connection-patterns">
+        <data>
+          <portConnectionRule connector="Connector" name="">
+            <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+            <association componentType="Component" portName="p" portType="Port" roleName="r" roleType="Role"/>
+          </portConnectionRule>
+        </data>
+      </userdata>
+      <design-rule name="topicsMatch">
+        <userdata key="RuleInfo">
+          <data errMsg="Something subscribes to a topic that isn't published" label="Every subscriber is matched with a publisher"/>
+        </userdata>
+      </design-rule>
+    </system>
+  </family>
+</AcmeModel>

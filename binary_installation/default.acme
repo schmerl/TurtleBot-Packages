@@ -1,0 +1,6 @@
+import ROSFam.acme;
+ 
+System Turtlebot : ROSFam = new ROSFam extended with {
+
+}
+

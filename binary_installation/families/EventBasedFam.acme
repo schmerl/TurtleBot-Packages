@@ -1,0 +1,40 @@
+family EventBasedFam = {
+        port type AnnouncePortT = {
+                rule attachedOnlyToAnnouncerRoleT =
+                        invariant forall a in self.ATTACHEDROLES
+                                | declaresType(a, AnnouncerRoleT);
+        };
+
+        port type ReceivePortT = {
+                rule attachedOnlyToReceiverRoleT =
+                        invariant forall a in self.ATTACHEDROLES
+                                | declaresType(a, ReceiverRoleT);
+        };
+
+        component type ParticipantCompT = {
+                rule atLeastTheseTypesAnnouncePortT_ReceivePortT =
+                        heuristic exists t in {AnnouncePortT, ReceivePortT}
+                        | exists e in self.PORTS
+                        | declaresType(e, t);
+        };
+
+        role type AnnouncerRoleT = {
+                rule attachedOnlyToAnnouncePortT =
+                        invariant forall a in self.ATTACHEDPORTS
+                                | declaresType(a, AnnouncePortT);
+        };
+
+        role type ReceiverRoleT = {
+                rule attachedOnlyToReceivePortT =
+                        invariant forall a in self.ATTACHEDPORTS
+                                | declaresType(a, ReceivePortT);
+        };
+
+        abstract connector type EventConnT = {
+                rule hasOneAnnoucerRole =
+                        invariant exists r in self.ROLES
+                                | declaresType(r, AnnouncerRoleT);
+                rule hasOneReceiverRole =
+                        invariant exists r in self.ROLES | declaresType(r, ReceiverRoleT);
+        };
+}

@@ -1,0 +1,94 @@
+import $AS_GLOBAL_PATH/families/PubSubFam.acme;
+ 
+import $AS_GLOBAL_PATH/families/LocalCallReturnFam.acme;
+ 
+Family CoBotFam extends PubSubFam, LocalCallReturnFam with {
+
+    Port Type ServiceRequestPortT extends LocalRequestPortT with {
+
+        Property service : string;
+
+        Property maxServiceTime : int <<  default : int = 30; >> ;
+
+    }
+    Port Type ServiceResponsePortT extends LocalResponsePortT with {
+
+        Property service : string;
+
+        Property serviceTime : int <<  default : int = 30; >> ;
+
+    }
+    Port Type TopicPublishPortT extends PublishPortT with {
+
+        Property topic : string;
+
+    }
+    Port Type TopicSubscriberPortT extends SubscribePortT with {
+
+        Property topic : string;
+
+    }
+    Port Type AsynchServiceRequestPortT extends LocalRequestPortT with {
+
+        Property service : string;
+
+    }
+    Port Type AsynchServiceResponsePortT extends LocalResponsePortT with {
+
+        Property service : string;
+
+    }
+    Component Type CoBotTaskCompT = {
+        rule asyncCallerSubscribes = invariant forall req :! AsynchServiceRequestPortT in self.PORTS | 
+            exists sub :! TopicSubscriberPortT in self.PORTS | 
+                req.service == sub.topic;
+        rule asyncResponderPublishes = invariant forall resp :! AsynchServiceResponsePortT in self.PORTS | 
+            exists ann :! TopicPublishPortT in self.PORTS | 
+                ann.topic == resp.service;
+        rule noServiceCallsToSelf_Sync = invariant forall req :! ServiceRequestPortT in self.PORTS | 
+             ! exists resp :! ServiceResponsePortT in self.PORTS | 
+                connected(req, resp);
+        rule noServiceCallsToSelf_Async = invariant forall req :! AsynchServiceRequestPortT in self.PORTS | 
+             ! exists resp :! AsynchServiceResponsePortT in self.PORTS | 
+                connected(req, resp);
+
+    }
+    Role Type CobotServiceCallerRoleT extends LocalCallerRoleT with {
+
+    }
+    Role Type CobotServiceResponderRoleT extends LocalResponderRoleT with {
+
+    }
+    Role Type TopicPublisherRoleT extends PublisherRoleT with {
+
+    }
+    Role Type TopicSubscriberRoleT extends SubscriberRoleT with {
+
+    }
+    Role Type AsynchCallerRoleT extends LocalCallerRoleT with {
+
+    }
+    Role Type AsynchResponderRoleT extends LocalResponderRoleT with {
+
+    }
+    Connector Type TopicBusConnT extends EventBusConnT with {
+
+        Property topic : string;
+
+    }
+    Connector Type SynchronousCobotServiceConnT extends LocalCallReturnConnT with {
+        rule serviceTimeInBounds = invariant forall c :! CobotServiceCallerRoleT in self.ROLES | 
+            forall r :! CobotServiceResponderRoleT in self.ROLES | 
+                forall req :! ServiceRequestPortT in c.ATTACHEDPORTS | 
+                    forall resp :! ServiceResponsePortT in r.ATTACHEDPORTS | 
+                        resp.serviceTime <= req.maxServiceTime;
+
+    }
+    Connector Type AsynchronousCobotServiceConnT extends LocalCallReturnConnT with {
+
+    }
+    rule topicsMatch = invariant forall s :! TopicSubscriberPortT in /self/COMPONENTS/PORTS:!TopicSubscriberPortT | 
+        exists p :! TopicPublishPortT in /self/COMPONENTS/PORTS:!TopicPublishPortT | 
+            s.topic == p.topic;
+}
+

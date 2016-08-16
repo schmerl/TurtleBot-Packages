@@ -1,0 +1,17 @@
+import families/RemoteCallReturnFam.acme;
+
+family ClientServerFam extends RemoteCallReturnFam with {
+    port type ClientPortT extends RemoteRequestPortT;
+
+    port type ServerPortT extends RemoteResponsePortT;
+
+    component type ClientCompT extends CallerCompT;
+
+    component type ServerCompT extends ResponderCompT;
+
+    role type ClientRoleT extends RemoteCallerRoleT;
+
+    role type ServerRoleT extends RemoteResponderRoleT;
+
+    connector type ClientServerConnT extends RemoteCallReturnConnT;
+}

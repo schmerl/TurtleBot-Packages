@@ -1,0 +1,36 @@
+family                                   DataflowFam = {
+  port type InputPortT = {
+        rule connectedOnlyToOutputRoleT = invariant forall r : Role in self.ATTACHEDROLES |
+            declaresType(r, OutputRoleT);
+
+    };
+    port type OutputPortT = {
+        rule connectedOnlyToInputRoleT = invariant forall r : Role in self.ATTACHEDROLES |
+            declaresType(r, InputRoleT);
+
+    };
+    abstract component type DFlowCompT = {
+        rule atLeastTheseTypesInputPortT_OutputPortT = heuristic exists t in {
+           InputPortT, OutputPortT} |
+            exists e in self.PORTS |
+                declaresType(e, t);
+
+    };
+    role type InputRoleT = {
+        rule connectedOnlyToOutputPortT = invariant forall p : Port in self.ATTACHEDPORTS |
+            declaresType(p, OutputPortT);
+
+    };
+    role type OutputRoleT = {
+        rule connectedOnlyToInputPortT = invariant forall p : Port in self.ATTACHEDPORTS |
+            declaresType(p, InputPortT);
+
+    };
+    abstract connector type DFlowConnT = {
+        rule atLeast1RoleOfTypeInputRoleT = invariant exists e in self.ROLES |
+            declaresType(e, InputRoleT);
+        rule atLeast1RoleOfTypeOutputRoleT = invariant exists e in self.ROLES |
+            declaresType(e, OutputRoleT);
+
+    };
+}
