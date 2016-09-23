@@ -11,14 +11,15 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", ip: "192.168.33.20"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.memory = "2048"
+    vb.memory = "4096"
+    vb.name = "cmu-mars"
   end
 
  $script = <<-SCRIPT
-  sudo apt-get install software-properties-common -y
-  sudo apt-add-repository ppa:ansible/ansible -y
+  sudo apt-get install software-properties-common -y --force-yes
+  sudo apt-add-repository ppa:ansible/ansible -y 
   sudo apt-get update -y
-  sudo apt-get install ansible -y
+  sudo apt-get install ansible -y --force-yes
   sudo apt-get install -f
   sudo cp /vagrant/ros-latest.list /etc/apt/sources.list.d/
   cd /vagrant
@@ -32,23 +33,42 @@ Vagrant.configure(2) do |config|
   sudo cp /vagrant/tcpros_service.py /opt/ros/indigo/lib/python2.7/dist-packages/rospy/impl/
   sudo add-apt-repository ppa:openjdk-r/ppa
   sudo apt-get update
-  sudo apt-get install openjdk-8-jre-headless -y
-  source /opt/ros/indigo/setup.bash
-  java -jar AcmeProject.jar > acmeProject.out &
-  python data.py > py.out &
-  rm -rf rainbow_effector
-  git clone rhttps://github.com/ekanshgupta90/rainbow_effector.git
-  cd rainbow_effector
-  source /opt/ros/indigo/setup.bash
-  roslaunch turtlebot_bringup minimal.launch > minimal.out &
-  sleep 30s
-  roslaunch turtlebot_navigation amcl_demo.launch > navigation.out &
-  sleep 30s
-  rosrun dynamic_reconfigure dynparam set /move_base recovery_behavior_enabled False
-  rosrun dynamic_reconfigure dynparam set /move_base clearing_rotation_allowed False
-  rosrun dynamic_reconfigure dynparam set /move_base shutdown_costmaps True
+  sudo apt-get install openjdk-8-jre-headless -y --force-yes
+  sudo apt-get install xserver-xorg-video-dummy
   SCRIPT
 
   config.vm.provision "shell", inline: $script, privileged: false
-
+  
+  config.vm.provision "shell" do |s|
+    s.inline = "cp -r /vagrant/catkin_ws /home/vagrant"
+	s.name = "Copy the base programs for CP1"
+	s.privileged = false
+  end
+  
+   config.vm.provision "shell" do |s|
+    s.inline = "cp /vagrant/setup-cp1.sh /home/vagrant"
+	s.name = "Copy the setup script"
+	s.privileged = false
+  end
+  
+   config.vm.provision "shell" do |s|
+    s.inline = "cp -r /vagrant/run-cp1.sh /home/vagrant"
+	s.name = "Copy the CP1 run script"
+	s.privileged = false
+  end
+  
+  config.vm.provision "shell" do |s|
+    s.inline = "cp -r /vagrant/xorg.conf /home/vagrant"
+	s.name = "Copy the X config file for use by headless robot"
+	s.privileged = false
+  end
+  
+  $setup = <<-SETUP
+  echo Setting up challenge problem 1
+  ./setup-cp1.sh
+  echo "source catkin_ws/devel/setup.bash" >> .bashrc
+  SETUP
+  
+  config.vm.provision "shell", inline: $setup, privileged: false
+  
 end

@@ -41,6 +41,10 @@
 
    - name: Install Ros-Ar-Track
      apt: pkg=ros-indigo-ar-track-alvar-msgs state=installed
+     
+   - name: Python Ply
+     apt: pkg=python-ply state=installed
+     
 
    # - name: Clone InstructionGraphs |  clone  git
    #   git: repo=https://github.com/anuragkanungo/instructiongraphs.git dest=~/
