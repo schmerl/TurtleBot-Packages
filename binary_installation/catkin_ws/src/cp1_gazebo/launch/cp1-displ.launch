@@ -21,8 +21,10 @@
   <!-- NOTE: The maze in the world might not be needed if the map server is required -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find cp1_gazebo)/worlds/Wean4.world"/>
+<!--
     <arg name="gui" value="false"/>
     <arg name="headless" value="true"/>
+-->
   </include>
 
   <!-- Spawn the turtlebot -->
